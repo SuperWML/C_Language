@@ -1,8 +1,5 @@
-#include <stdio.h>
-#include <stdbool.h>
-
 bool isPalindrome(int x){
-	int sum = 0;
+	unsigned long long sum = 0;
 	int tmp = x;
 	if(x < 0)
 	{
@@ -17,8 +14,8 @@ bool isPalindrome(int x){
 		sum = 0;
 		while(tmp)
 		{
-			sum += tmp%10;
 			sum = sum*10;
+			sum += tmp%10;
 			tmp /= 10;
 		}
 	}
@@ -28,7 +25,4 @@ bool isPalindrome(int x){
 	}
 	return false;
 }
-int main (void)
-{
-	printf("%d",isPalindrome(121));
-}
+
