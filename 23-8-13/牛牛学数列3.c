@@ -2,6 +2,7 @@
 int main (void)
 {
 	int n = 0;
+	scanf("%d",&n);
 	int flag = 1;
 	double sum = 0.0;
 	for(int i = 1;i <= n;i++)
