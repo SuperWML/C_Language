@@ -9,11 +9,15 @@ int main (void)
 	for(int i = 0;arr[i] != '\0';i++)
 	{
 		count[arr[i]]++;
-		if(count[arr[i]])
+		
+	}
+	for(int i = 0;i < 128;i++)
+	{
+		if(count[i])
 		{
 			sum++;
 		}
 	}
 	printf ("%d",sum);
-return 0;
+	return 0;
 }
