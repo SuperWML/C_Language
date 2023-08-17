@@ -41,6 +41,7 @@ int main (void)
 	}
 	else
 	{
+		judge = 0;
 		printf ("No Answer\n%d",judge);
 	}
 	return 0;
