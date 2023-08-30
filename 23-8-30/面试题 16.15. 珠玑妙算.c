@@ -31,19 +31,14 @@ int* masterMind(char* solution, char* guess, int* returnSize){
 	}
 	ret[0] = Rguess;
 	ret[1] = Vguess;
+	printf ("%d %d",Rguess,Vguess);
 	return ret;
 }
 int main (void)
 {
-	char* arr1 = "BRBB";
-	char* arr2 = "RBGY";
-	int * returnSize = 0;
-	int* ret = (int*)malloc(sizeof(int) * 2);
-	ret = masterMind(arr1,arr2,returnSize);
-	
-	for(int i = 0;i < 2;i++)
-	{
-		printf ("%d ",ret[i]);
-	}
+	char arr1[10] = "BRBB";
+	char arr2[10] = "RBGY";
+	int  returnSize = 0;
+	int* ret = masterMind(arr1,arr2,&returnSize);
 	return 0;
 }
