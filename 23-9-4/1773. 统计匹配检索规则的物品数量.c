@@ -24,5 +24,3 @@ int countMatches(char *** items, int itemsSize, int* itemsColSize, char * ruleKe
 	}
 	return count;
 }
-
-int (*(*Parr)[4])(int,int);
