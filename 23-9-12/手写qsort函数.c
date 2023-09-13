@@ -23,7 +23,7 @@ int main (void)
 }
 
 //函数功能：自己所实现的qsort函数
-void my_bubble_qsort(void* base,int sz,int width,int(*cmp)(const void* e1,void* e2))
+void my_bubble_qsort(void* base,int sz,int width,int (*cmp)(const void* e1,void* e2))
 {
 	for(int i = 0;i < sz - 1;i++)
 	{
