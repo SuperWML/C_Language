@@ -1,15 +1,34 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
+#include <stdbool.h>
 #define MAX 4
-#define DataType int      //æŠŠintç±»å‹å®šä¹‰ä¸ºDataTypeï¼Œè¡¨ç¤ºé¡ºåºè¡¨ä¸­çš„æ•°æ®ï¼Œå…¶å®ä»€ä¹ˆæ•°æ®ç±»å‹éƒ½å¯ä»¥é‡æ–°å®šä¹‰
+#define DataType int      //°ÑintÀàĞÍ¶¨ÒåÎªDataType£¬±íÊ¾Ë³Ğò±íÖĞµÄÊı¾İ£¬ÆäÊµÊ²Ã´Êı¾İÀàĞÍ¶¼¿ÉÒÔÖØĞÂ¶¨Òå
 
 typedef struct SL{
-	DataType* data;             //å®šä¹‰ä¸€ä¸ªæŒ‡é’ˆå˜é‡dataï¼Œç”¨æ¥å­˜å‚¨å¯¹åº”çš„æ•°æ®
-	int sz;                     //å®šä¹‰ä¸€ä¸ªszå˜é‡ï¼Œç”¨æ¥æ§åˆ¶å½“å‰çš„æ•°æ®ä¸ªæ•°
-	int capacity;               //å®šä¹‰ä¸€ä¸ªcapacityå˜é‡ï¼Œç”¨æ¥è¡¨ç¤ºå½“å‰é¡ºåºè¡¨ä¸­çš„å®¹é‡
+	DataType* data;             //¶¨ÒåÒ»¸öÖ¸Õë±äÁ¿data£¬ÓÃÀ´´æ´¢¶ÔÓ¦µÄÊı¾İ
+	int sz;                     //¶¨ÒåÒ»¸ösz±äÁ¿£¬ÓÃÀ´¿ØÖÆµ±Ç°µÄÊı¾İ¸öÊı
+	int capacity;               //¶¨ÒåÒ»¸öcapacity±äÁ¿£¬ÓÃÀ´±íÊ¾µ±Ç°Ë³Ğò±íÖĞµÄÈİÁ¿
 }SeqList;
 
-//å‡½æ•°åŠŸèƒ½ï¼šåˆå§‹åŒ–é¡ºåºè¡¨
+//º¯Êı¹¦ÄÜ£ºË³Ğò±íµÄÖĞ¼äÉ¾³ı
+void SLerase(SeqList* s,int pos)
+{
+	assert(pos >= 0 && pos < s->sz && s->sz > 0);
+	for(int i = pos;i < s->sz-1;i++)
+	{
+		s->data[i] = s->data[i+1];
+	}
+	s->sz--;
+}
+
+//º¯Êı¹¦ÄÜ£ºË³Ğò±íµÄÍ·É¾
+void SLpopFront(SeqList* s)
+{
+	SLerase(s,0);
+}
+
+//º¯Êı¹¦ÄÜ£º³õÊ¼»¯Ë³Ğò±í
 void InitSq(SeqList* s)
 {
 	s->data = (DataType*)malloc(sizeof(DataType)*MAX);
@@ -17,21 +36,21 @@ void InitSq(SeqList* s)
 	s->capacity = MAX;
 }
 
-//å‡½æ•°åŠŸèƒ½:é”€æ¯é¡ºåºè¡¨
+//º¯Êı¹¦ÄÜ:Ïú»ÙË³Ğò±í
 void DestorySl(SeqList* s)
 {
-	free(s->data);                   //è§£é™¤s->dataæŒ‡å‘ç©ºé—´çš„æ‰€æœ‰æƒ
-	s->sz = 0;                       //å°†å½“å‰é¡ºåºè¡¨çš„å…ƒç´ ä¸ªæ•°ç½®ä¸º0
-	s->capacity = 0;                 //å°†é¡ºåºè¡¨çš„æ€»ä¸ªæ•°ç½®ä¸º0
-	s->data = NULL;                  //å°†s->dataæŒ‡é’ˆæŒ‡å‘NULLï¼Œé¿å…é‡æŒ‡é’ˆçš„é”™è¯¯
+	free(s->data);                   //½â³ıs->dataÖ¸Ïò¿Õ¼äµÄËùÓĞÈ¨
+	s->sz = 0;                       //½«µ±Ç°Ë³Ğò±íµÄÔªËØ¸öÊıÖÃÎª0
+	s->capacity = 0;                 //½«Ë³Ğò±íµÄ×Ü¸öÊıÖÃÎª0
+	s->data = NULL;                  //½«s->dataÖ¸ÕëÖ¸ÏòNULL£¬±ÜÃâÒ°Ö¸ÕëµÄ´íÎó
 }
 
-//å‡½æ•°åŠŸèƒ½ï¼šæ£€æŸ¥é¡ºåºè¡¨ä¸­çš„å®¹é‡æ˜¯å¦å¤Ÿç”¨
+//º¯Êı¹¦ÄÜ£º¼ì²éË³Ğò±íÖĞµÄÈİÁ¿ÊÇ·ñ¹»ÓÃ
 void CheckSL(SeqList* s)
 {
 	if(s->sz == s->capacity)
 	{
-		DataType*tmp = realloc(s->data,2*sizeof(DataType)*s->capacity);    //å¦‚æœé¡ºåºè¡¨æ»¡äº†ï¼Œé‡æ–°ç”³è¯·å†…å­˜ï¼Œå¤§å°æ˜¯å½“å‰é¡ºåºè¡¨æœ€å¤§å®¹é‡çš„äºŒå€
+		DataType*tmp = realloc(s->data,2*sizeof(DataType)*s->capacity);    //Èç¹ûË³Ğò±íÂúÁË£¬ÖØĞÂÉêÇëÄÚ´æ£¬´óĞ¡ÊÇµ±Ç°Ë³Ğò±í×î´óÈİÁ¿µÄ¶ş±¶
 		if(tmp == NULL)
 		{
 			perror("realloc error");
@@ -42,18 +61,44 @@ void CheckSL(SeqList* s)
 			s->capacity *= 2;
 		}
 	}
-	
 }
 
-//å‡½æ•°åŠŸèƒ½ï¼šé¡ºåºè¡¨çš„å°¾æ’æ³•
-void SLpushTail(SeqList* s,DataType x)
+
+//º¯Êı¹¦ÄÜ£ºË³Ğò±íµÄÎ²É¾
+void SLpopBack(SeqList* s)
 {
+	assert((s->sz) > 0);                    //±©Á¦¼ì²éË³Ğò±íÖĞÊÇ·ñÓĞÔªËØ
+	//s->sz--;                              //Ë³Ğò±íµÄÎ²É¾£¬Ö±½ÓÈÃË³Ğò±íÖĞµÄÔªËØ¸öÊı-1¾ÍºÃ
+	SLerase(s,s->sz-1);
+}
+
+//º¯Êı¹¦ÄÜ£ºÔÚË³Ğò±íÖĞÕÒÒ»¸öÖĞ¼äÎ»ÖÃ²åÈë£¨°üÀ¨ÁË±©Á¦¼ì²é£©
+void SLpush(SeqList* s,int pos,DataType x)
+{
+	assert(pos >= 0 && pos <= s->sz);
 	CheckSL(s);
-	s->data[s->sz] = x;
+	for(int i = s->sz;i > pos;i--)
+	{
+		s->data[i] = s->data[i-1];
+	}
+	s->data[pos] = x;
 	s->sz++;
 }
 
-//å‡½æ•°åŠŸèƒ½ï¼šé¡ºåºè¡¨çš„éå†
+//º¯Êı¹¦ÄÜ:Í·²å·¨
+void SlpushFront(SeqList* s,DataType x)
+{
+	CheckSL(s);
+	SLpush(s,0,x);
+}
+//º¯Êı¹¦ÄÜ£ºË³Ğò±íµÄÎ²²å·¨
+void SLpushTail(SeqList* s,DataType x)
+{
+	CheckSL(s);
+	SLpush(s,s->sz,x);
+}
+
+//º¯Êı¹¦ÄÜ£ºË³Ğò±íµÄ±éÀú
 void PrintSL(SeqList* s)
 {
 	for(int i = 0;i < s->sz;i++)
@@ -63,16 +108,42 @@ void PrintSL(SeqList* s)
 	printf ("\n");
 }
 
+//º¯Êı¹¦ÄÜ£º²éÕÒË³Ğò±íÖĞµÄÔªËØ£¬²¢ÇÒ·µ»ØÆä¶ÔÓ¦µÄÏÂ±ê ???
+int SLFind(SeqList* s,DataType x)
+{
+	for(int i = 0;i < s->sz;i++)
+	{
+		if(s->data[i] == x)
+		{
+			return i;
+		}
+	}
+	return false;
+}
+
+//º¯Êı¹¦ÄÜ£º¸ù¾İÎ»ÖÃĞŞ¸ÄË³Ğò±íÖĞµÄÔªËØµÄÖµ
+void SLmodify(SeqList* s,int pos,DataType x)
+{
+	assert(pos >= 0 && pos < s->sz);
+	s->data[pos] = x;
+}
+
 int main (void)
 {
-	SeqList s;                  //å®šä¹‰ä¸€ä¸ªé¡ºåºè¡¨å˜é‡S
-	InitSq(&s);                 //åˆå§‹åŒ–é¡ºåºè¡¨sï¼Œè¿™é‡Œè¦ä¼ é€’å˜é‡sçš„åœ°å€ï¼Œå¦‚æœåªæ˜¯ä¼ å€¼çš„è¯æ”¹å˜ä¸äº†sä¸­çš„å€¼
+	SeqList s;                  //¶¨ÒåÒ»¸öË³Ğò±í±äÁ¿S
+	InitSq(&s);                 //³õÊ¼»¯Ë³Ğò±ís£¬ÕâÀïÒª´«µİ±äÁ¿sµÄµØÖ·£¬Èç¹ûÖ»ÊÇ´«ÖµµÄ»°¸Ä±ä²»ÁËsÖĞµÄÖµ
 	SLpushTail(&s,1);
 	SLpushTail(&s,2);
 	SLpushTail(&s,3);
 	SLpushTail(&s,4);
 	SLpushTail(&s,5);
 	SLpushTail(&s,6);
+	SlpushFront(&s,10);
+	SLpush(&s,3,7);
+	//SLpopBack(&s);
+	SLerase(&s,2);
+	SLpopFront(&s);
+	SLmodify(&s,2,10);
 	PrintSL(&s);
 	DestorySl(&s);
 	return 0;
